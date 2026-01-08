@@ -3,12 +3,8 @@ services:
   dpad_llc_home:
     build: ./frontend
     container_name: dpad_frontend 
-    hostname: trading_dashboard 
+    hostname: dpad_frontend 
     restart: always
-    volumes:
-      - type: bind 
-        source: ./frontend/static
-        target: /app/static
     ports: 
       - 80:80 
       - 443:443 
