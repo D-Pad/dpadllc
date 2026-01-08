@@ -1,0 +1,67 @@
+services:
+ 
+  trading_dashboard:
+    build: ./frontend
+    container_name: trading_dashboard 
+    hostname: trading_dashboard 
+    restart: always
+    volumes:
+      - type: bind 
+        source: ./frontend/static
+        target: /app/static
+    ports: 
+      - 80:80 
+      - 443:443 
+    networks:
+      - dpad_llc
+
+  trading_api:
+    build: ./backend
+    container_name: trading_api 
+    hostname: trading_api 
+    restart: always 
+    environment:
+      - FLASKARGS=start_server
+      - API_PORT=8080
+      - DB_USER_NAME=root
+      - DB_PASSWORD=trade_db
+      - DB_HOST_NAME=trading_db
+    volumes:
+      - type: bind
+        source: ./backend/server_logs
+        target: /server_logs
+      - type: bind
+        source: ./prod_system_cache/.cache_data
+        target: /app/cache/.cache_data
+      - type: bind
+        source: ./prod_system_cache/.pickled_objs
+        target: /app/cache/.pickled_objs
+    ports: 
+      - 8080-8081:8080-8081
+    networks:
+      - dpad_llc 
+    depends_on:
+      - dpad_llc_db
+
+  trading_db:
+    image: mariadb:latest
+    container_name: trading_db 
+    restart: always
+    hostname: trading_db
+    volumes:
+      - type: bind 
+        source: ./database/.db
+        target: /var/lib/mysql
+      - type: bind 
+        source: ./database/perms.sql
+        target: /docker-entrypoint-initdb.d/perms.sql
+    environment:
+      - MARIADB_ROOT_PASSWORD=trade_db
+    networks:
+      - dpad_llc
+
+networks:
+  dpad_llc:
+    driver: bridge
+    name: dpad_llc 
+
