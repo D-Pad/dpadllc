@@ -1,33 +1,39 @@
-from fastapi import FastAPI
-from os import environ
-import uvicorn
+from flask import Flask, request
+from flask_cors import CORS
 import requests
 
-
-app = FastAPI()
-
-
-LLM_URL = "http://localhost:7000/completion"
+from os import environ
 
 
-@app.get("/")
+app = Flask(__name__)
+CORS(app)
+
+
+@app.route("/")
 def home():
     return {"Hello": "world"}
 
 
-@app.post("/chat")
-async def chat(prompt: str):
+@app.route("/chat", methods=["POST"])
+def chat():
+
+    data = request.json
+    print("DATA", data)
+
     payload = {
-        "prompt": prompt,
+        "prompt": data["prompt"],
         "n_predict": 256,
         "temperature": 0.7,
         "stop": ["</s>"]
     }
+
     resp = requests.post(LLM_URL, json=payload)
     return resp.json()
 
 
 def start_server():
-    API_PORT = environ.get("WEBPAGE_API_PORT", 8082)
-    uvicorn.run("main:app", host="0.0.0.0", port=API_PORT, reload=True) 
+    API_PORT = int(environ.get("WEBPAGE_API_PORT", 8082))
+    app.run(host="0.0.0.0", 
+            port=API_PORT, 
+            debug=True) 
 
