@@ -18,7 +18,6 @@ def home():
 def chat():
 
     data = request.json
-    print("DATA", data)
 
     payload = {
         "prompt": data["prompt"],
@@ -27,8 +26,8 @@ def chat():
         "stop": ["</s>"]
     }
 
-    resp = requests.post(LLM_URL, json=payload)
-    return resp.json()
+    resp = requests.post("http://llama:7000/completion", json=payload)
+    return resp.json() 
 
 
 def start_server():

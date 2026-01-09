@@ -10,7 +10,8 @@
   python -m venv /usr/local/venvs/webpage && \
   source /usr/local/venvs/webpage/bin/activate && \
   pip install -r ./app/requirements.txt && \
-  deactivate
+  deactivate && \
+  clear
 
 # App start
 source /usr/local/venvs/webpage/bin/activate

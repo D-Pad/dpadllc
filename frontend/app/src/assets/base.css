@@ -1,18 +1,27 @@
 :root {
-  --background: #0C1859;
+  --background: #120032;
+  --background-transparent: 18 0 50;
   --foreground: #F5F5F5;
 
   --red: #F26938;
-  --green: #6ED720;
-  --yellow: #F4C939;
+  --pink: #FF218C;
+  --green: #8DEB46;
+  --yellow: #FFDF87;
   --blue: #3621BF;
-  --magenta: #A305A6;
-  --cyan: #1DF2DD;
+  --magenta: #6E0A8F;
+  --cyan: #00D6BD;
+
+  --dark-blue: #0C1859;
 }
 
 
 body {
   background: var(--background);
   color: var(--foreground);
+  background-image: url('./images/outrun.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 

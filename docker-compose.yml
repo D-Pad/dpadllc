@@ -10,9 +10,46 @@ services:
       - 443:443 
     networks:
       - dpad_llc
+ 
+  dpad_llc_api:
+    build: ./backend
+    container_name: dpad_backend 
+    hostname: dpad_backend 
+    restart: always
+    ports:
+      - 8082:8082
+    environment:
+      - WEBPAGE_API_PORT=8082
+    networks:
+      - dpad_llc  
+
+  llama:
+    image: ghcr.io/ggml-org/llama.cpp:server 
+    container_name: llama-server
+    restart: unless-stopped
+    ports:
+      - "7000:7000"
+    networks:
+      - dpad_llc 
+    volumes:
+      - ./ai_server/models:/models:ro
+    command: >
+      -m /models/meta-llama-3-8b-instruct.Q4_K_M.gguf
+      --ctx-size 4096
+      --threads 12
+      --batch-size 256
+      --host 0.0.0.0
+      --port 7000 
+    deploy:
+      resources:
+        limits:
+          cpus: "16"
+    profiles:
+      - ai
 
 networks:
   dpad_llc:
     driver: bridge
-    name: dpad_llc 
+    name: dpad_llc
+    external: true
 

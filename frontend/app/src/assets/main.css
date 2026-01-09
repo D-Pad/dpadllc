@@ -1,34 +1,86 @@
 @import './base.css';
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 80vh;
+  background-color: var(--background);
+  color: var(--foreground, #1FA6A6);
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  min-height: 90vh;
+  min-width: 70vw;
+  margin: 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-a,
-.green {
-  text-decoration: none;
+header {
+  flex-shrink: 0;  
+}
+
+footer {
+  display: flex;
+  flex-shrink: 0;  
+  width: 100%;
+  justify-content: center;
   color: var(--red);
-  transition: 0.4s;
-  padding: 3px;
+  gap: 20px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+main {
+  flex: 1;         /* Main takes remaining height */
+  padding: 2rem;
+  width: 100%;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+a {
+  color: var(--red, #F25C5C);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  border-radius: 4px;
 }
+
+a:hover {
+  background-color: var(--cyan, #79F2F2);
+  color: var(--background, #251140);
+  border-color: var(--cyan, #79F2F2);
+}
+
+.router-link-active {
+  background-color: var(--cyan, #79F2F2);
+  color: var(--background, #251140);
+}
+
+.visible-div, .visible-div-light {
+  border: 1px solid var(--cyan);
+  border-radius: 10px;
+  margin-top: 5px;
+  background-color: var(--background);
+  z-index: 1;
+}
+
+.visible-div-light {
+  background-color: rgba(var(--background-transparent) / 0.7);
+}
+
+.nav-bar-wrapper {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 30%;
+  margin: 0px auto;
+}
+

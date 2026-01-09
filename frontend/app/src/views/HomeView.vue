@@ -1,10 +1,14 @@
 <script setup lang="ts">
-
+import ChatWindow from "@/components/ChatWindow.vue";  
 </script>
 
 <template>
-  <div>
-    Testing
-  </div>
+
+  <ChatWindow />
+
 </template>
+
+<style scoped>
+  
+</style>
 
