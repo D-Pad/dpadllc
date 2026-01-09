@@ -2,11 +2,11 @@
 import { ref } from 'vue'
 import { fetchAiResponse } from "@/assets/scripts/fetch_data.ts"; 
 
-// Optional: example message storage
+
 const messages = ref<string[]>([])
 const userInput = ref('')
-
 const textarea = ref<HTMLTextAreaElement | null>(null)
+
 
 const resizeTextarea = () => {
   if (textarea.value) {
@@ -15,23 +15,90 @@ const resizeTextarea = () => {
   }
 }
 
-function sendMessage() {
+
+const sendMessage = () => {
   if (!userInput.value.trim()) return
-  messages.value.push(userInput.value)
+  messages.value.push({ role: "user", content: userInput.value });
   fetchAiResponse(userInput.value);
   userInput.value = ''
+}
+
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+
+const fetchingResponse = ref(false);
+const fetchAiResponse = async (prompt: str) => {
+
+  fetchingResponse.value = true;
+  messages.value.push({ role: "system", content: "" });
+  
+  const payload = {
+    prompt: prompt
+  };
+  
+  const response = await fetch(`${API_URL}/chat`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    throw new Error(`API Request error: ${resp.status}`);
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+
+  const index = messages.value.length - 1;
+  while (true) {
+    
+    const { value, done } = await reader.read();
+    if (done) break;
+    
+    const chunk = decoder.decode(value);
+    messages.value[index].content += chunk; 
+  };
+
+  fetchingResponse.value = false;
+}
+
+const formatMessage = (text: string) => {
+  return text
+    .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+    .replace(/\n/g, '<br>')
+    .replace(
+      /https?:\/\/[^\s<]+/g, 
+      '<a href="$&" target="_blank" rel="noopener">$&</a>'
+    );
 }
 </script>
 
 <template>
   <div class="chat-container">
     <div class="chat-window" id="chat-window">
-      <div v-for="(msg, index) in messages" :key="index" class="message user">
-        {{ msg }}
+      <div 
+        v-for="(msg, index) in messages"
+        :key="index" 
+        class="message-wrapper"
+      >
+        <div 
+          class="message" 
+          :class="{ user: msg.role === 'user', assistant: msg.role !== 'user' }"
+        >
+          <div 
+            class="message-content" 
+            v-html="formatMessage(msg.content)"
+          >
+          </div>
+      
+        </div>
       </div>
     </div>
 
-    <div class="input-container">
+    <div v-if="!fetchingResponse" class="input-container">
       <textarea
         ref="textarea"
         v-model="userInput"
@@ -49,30 +116,74 @@ function sendMessage() {
 <style scoped>
 .chat-container {
   height: 80vh;
+  width: 100%;
+  max-width: 900px;           /* ← very important! */
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  width: 70%;
-  margin: auto;
+  overflow: hidden;           /* ← prevents weird leaks */
 }
 
 .chat-window {
-  flex: 1;                 
-  overflow-y: auto;        
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;         /* ← crucial! */
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.message-wrapper {
+  display: flex;
+  width: 100%;
 }
 
 .message {
-  max-width: 80%;
-  padding: 0.8rem 1.2rem;
-  border-radius: 1.2rem;
+  max-width: 82%;             /* ← very important constraint */
+  padding: 0.9rem 1.3rem;
+  border-radius: 1.3rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  overflow-wrap: break-word;  /* modern & best */
+  word-break: break-word;     /* fallback */
+  hyphens: auto;              /* bonus for long words */
+  width: fit-content;         /* ← very important! */
 }
 
 .message.user {
-  align-self: flex-end;
-  background: var(--blue);
+  margin-left: auto;
+  background: var(--blue, #3b82f6);
   color: white;
+  border-bottom-right-radius: 0.4rem;
+}
+
+.message.assistant {
+  margin-right: auto;
+  background: var(--gray-700, #374151);
+  color: white;
+  border-bottom-left-radius: 0.4rem;
+}
+
+/* Very important for newlines & code */
+.message-content {
+  white-space: pre-wrap;      /* keeps \n + wraps long lines */
+  word-break: break-word;
+}
+
+/* Optional but very nice for code blocks */
+.message-content pre {
+  background: #1e293b;
+  padding: 1rem;
+  border-radius: 0.6rem;
+  overflow-x: auto;
+  margin: 0.8rem 0;
+}
+
+.message-content code {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.92em;
 }
 
 .input-container {

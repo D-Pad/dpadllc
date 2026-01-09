@@ -7,7 +7,7 @@ export const fetchAiResponse = async (prompt: str) => {
     prompt: prompt
   };
   
-  const resp = await fetch(`${API_URL}/chat`, {
+  const response = await fetch(`${API_URL}/chat`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -15,14 +15,18 @@ export const fetchAiResponse = async (prompt: str) => {
     body: JSON.stringify(payload)
   });
 
-  if (!resp.ok) {
+  if (!response.ok) {
     throw new Error(`API Request error: ${resp.status}`);
   }
 
-  const data = await resp.json();
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
 
-  console.log("RESPONSE", data);
-
-  return data
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    const chunk = decoder.decode(value);
+    console.log(chunk); 
+  };
 }
 
