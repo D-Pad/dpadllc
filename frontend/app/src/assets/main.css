@@ -38,12 +38,12 @@ footer {
 }
 
 main {
-  flex: 1;         /* Main takes remaining height */
+  flex: 1;      
   padding: 2rem;
   width: 100%;
 }
 
-a {
+.nav-btn-main {
   color: var(--red, #F25C5C);
   text-decoration: none;
   padding: 0.5rem 1rem;
@@ -52,7 +52,7 @@ a {
   border-radius: 4px;
 }
 
-a:hover {
+.nav-btn-main:hover {
   background-color: var(--cyan, #79F2F2);
   color: var(--background, #251140);
   border-color: var(--cyan, #79F2F2);
@@ -63,17 +63,40 @@ a:hover {
   color: var(--background, #251140);
 }
 
-.visible-div, .visible-div-light {
+.visible-div,
+.visible-div-light {
   border: 3px solid var(--cyan);
   border-radius: 10px;
   margin-top: 5px;
   background-color: var(--background);
   z-index: 1;
-  box-shadow: 0px 0px 10px 7px var(--yellow);
+
+  /* Base glow */
+  box-shadow: 
+    0 0 4px 2px var(--yellow);
+
+  animation: pulse-glow 3s infinite ease-in-out;
 }
 
+/* Optional: slower/more subtle version */
 .visible-div-light {
   background-color: rgba(var(--background-transparent) / 0.7);
+  animation: pulse-glow 4.5s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 
+      0 0 4px 2px var(--yellow),
+      0 0 8px 4px rgba(255, 255, 0, 0.2),
+      inset 0 0 8px 2px rgba(255, 255, 0, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px 5px var(--yellow),
+      0 0 15px 10px rgba(255, 255, 0, 0.45),
+      inset 0 0 12px 4px rgba(255, 255, 0, 0.3);
+  }
 }
 
 .nav-bar-wrapper {

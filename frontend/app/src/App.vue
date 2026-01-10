@@ -8,9 +8,10 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   <header>
     <div class="nav-bar-wrapper visible-div">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About Us</RouterLink>
-        <a
+        <RouterLink class="nav-btn-main" to="/">Home</RouterLink>
+        <RouterLink class="nav-btn-main" to="/about">About Us</RouterLink>
+        <a 
+          class="nav-btn-main"
           href="/dpad_llc_resume.pdf"
           target="_blank"
           rel="noopener"
@@ -25,13 +26,42 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
     <RouterView />
   </main>
 
-  <footer id="footer" class="visible-div">
-    <span>Built with Vue.js</span>
-    <span>•</span>
-    <span>© 2026 D-Pad LLC</span>
-    <span>•</span>
-    <span>All rights reserved</span>
-  </footer>
+  <div id="footer-wrapper">
+    <footer id="footer" class="visible-div">
+      <span>Built with Vue.js</span>
+      <span>•</span>
+      <span>© 2026 D-Pad LLC</span>
+      <span>•</span>
+      <span>All rights reserved</span>
+    </footer>
+  </div>
+
+  <div id="social-media-wrapper">
+    <div id="social-media-icon-row">
+      <a 
+        href="https://github.com/D-Pad"
+        target="_blank"
+        rel="noopener noreferrer"
+      > 
+        <img 
+          class="social-media-icon" 
+          src="@/assets/images/github.png" 
+          alt="github" 
+        />
+      </a>
+      <a 
+        href="https://www.linkedin.com/in/chase-fincher-6770573a5/"
+        target="_blank"
+        rel="noopener noreferrer"
+      > 
+        <img 
+          class="social-media-icon" 
+          src="@/assets/images/linkdin.png" 
+          alt="linkdin" 
+        />
+      </a>
+    </div>
+  </div>
 
   <AlienHunter />
 
@@ -47,6 +77,13 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
 
 #footer {
   margin-top: 30px;
+  width: 600px;
+}
+
+#footer-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0px auto;
 }
 
 .nav-bar-wrapper {
@@ -95,5 +132,34 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   100% {
     transform: translateY(120vh);
   }
+}
+
+#social-media-wrapper {
+  width: 100%;
+  margin: 30px auto 20px; 
+  text-align: center;     
+}
+
+#social-media-icon-row {
+  display: inline-block;    
+}
+
+.social-media-icon {
+  width: 32px;
+  height: auto;
+  margin: 0 12px;
+  vertical-align: middle;
+  border-radius: 16px;
+
+  box-shadow: 0 0 0 0 var(--cyan);
+  transition: 
+    box-shadow 0.4s ease,
+    transform 0.3s ease;   
+}
+
+.social-media-icon:hover {
+  box-shadow: 0 0 8px 4px var(--cyan);
+  transform: scale(1.12);   
+  cursor: pointer;
 }
 </style>
