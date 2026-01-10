@@ -110,29 +110,39 @@ const formatMessage = (text: string) => {
       />
       <button @click="sendMessage">Send</button>
     </div>
+
+    <div id="footer-msg">
+      <span id="footer-text">
+        Try "Tell me about yourself." or "What is this?"
+      </span>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .chat-container {
-  height: 80vh;
+  height: 75vh;
   width: 100%;
-  max-width: 900px;           /* ← very important! */
+  max-width: 900px;           
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  overflow: hidden;           /* ← prevents weird leaks */
+  overflow: hidden;          
 }
 
 .chat-window {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;         /* ← crucial! */
-  padding: 1rem;
+  overflow-x: hidden;       
   display: flex;
+  padding: 30px;
   flex-direction: column;
   gap: 1.2rem;
   width: 100%;
+}
+
+.chat-window::-webkit-scrollbar {
+  display: none;
 }
 
 .message-wrapper {
@@ -141,38 +151,38 @@ const formatMessage = (text: string) => {
 }
 
 .message {
-  max-width: 82%;             /* ← very important constraint */
+  max-width: 82%;             
   padding: 0.9rem 1.3rem;
   border-radius: 1.3rem;
   font-size: 1rem;
   line-height: 1.45;
-  overflow-wrap: break-word;  /* modern & best */
-  word-break: break-word;     /* fallback */
-  hyphens: auto;              /* bonus for long words */
-  width: fit-content;         /* ← very important! */
+  overflow-wrap: break-word;  
+  word-break: break-word;     
+  hyphens: auto;              
+  width: fit-content;         
 }
 
 .message.user {
   margin-left: auto;
-  background: var(--blue, #3b82f6);
+  background: var(--blue);
   color: white;
   border-bottom-right-radius: 0.4rem;
+  box-shadow: 0px 0px 10px 7px var(--cyan);
 }
 
 .message.assistant {
   margin-right: auto;
-  background: var(--gray-700, #374151);
+  background: var(--magenta);
   color: white;
   border-bottom-left-radius: 0.4rem;
+  box-shadow: 0px 0px 10px 5px var(--pink);
 }
 
-/* Very important for newlines & code */
 .message-content {
-  white-space: pre-wrap;      /* keeps \n + wraps long lines */
+  white-space: pre-wrap;  
   word-break: break-word;
 }
 
-/* Optional but very nice for code blocks */
 .message-content pre {
   background: #1e293b;
   padding: 1rem;
@@ -195,7 +205,7 @@ const formatMessage = (text: string) => {
 .input-container button {
   padding: 0.8rem 1.5rem;
   border-radius: 2rem;
-  background: var(--red); /* or your theme color */
+  background: var(--red); 
   color: white;
   border: none;
   cursor: pointer;
@@ -210,12 +220,19 @@ const formatMessage = (text: string) => {
   color: #fff;
   font-size: 16px;
   outline: none;
-  resize: none;          /* Disable manual resize handle */
-  overflow: hidden;      /* Hide scrollbar while growing */
-  min-height: 48px;      /* Minimum single-line height */
-  max-height: 200px;     /* Optional: cap at ~8 lines to allow scrolling after */
-  line-height: 1.5;      /* Helps smooth growth */
-  transition: height 0.2s ease; /* Smooth animation */
+  resize: none;          
+  overflow: hidden;      
+  min-height: 48px;      
+  max-height: 200px;     
+  line-height: 1.5;      
+  transition: height 0.2s ease; 
   width: 80%;
+}
+
+#footer-msg {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px; 
+  color: #777;
 }
 </style>

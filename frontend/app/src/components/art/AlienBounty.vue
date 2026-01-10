@@ -9,7 +9,7 @@
 <style scoped>
 #alien-bounty {
   position: fixed;
-  width: 300px;
+  width: 400px;
   height: auto;
   pointer-events: none;
   bottom: 0px;

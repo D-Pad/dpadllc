@@ -64,11 +64,12 @@ a:hover {
 }
 
 .visible-div, .visible-div-light {
-  border: 1px solid var(--cyan);
+  border: 3px solid var(--cyan);
   border-radius: 10px;
   margin-top: 5px;
   background-color: var(--background);
   z-index: 1;
+  box-shadow: 0px 0px 10px 7px var(--yellow);
 }
 
 .visible-div-light {
