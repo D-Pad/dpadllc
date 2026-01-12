@@ -9,6 +9,7 @@
 <style scoped>
 #dpad-logo {
   margin: auto;
+  max-width: 100%;
   width: 900px;
   height: auto;
   pointer-events: none;

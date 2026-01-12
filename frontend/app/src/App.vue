@@ -8,17 +8,21 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   <header>
     <div class="nav-bar-wrapper visible-div">
       <nav>
-        <RouterLink class="nav-btn-main" to="/">Home</RouterLink>
-        <RouterLink class="nav-btn-main" to="/chat">Chat</RouterLink>
-        <RouterLink class="nav-btn-main" to="/about">About Us</RouterLink>
-        <a 
-          class="nav-btn-main"
-          href="/dpad_llc_resume.pdf"
-          target="_blank"
-          rel="noopener"
-        >
-          Resume
-        </a>
+        <div>
+          <RouterLink class="nav-btn-main" to="/">Home</RouterLink>
+          <RouterLink class="nav-btn-main" to="/chat">Chat</RouterLink>
+        </div>
+        <div>
+          <RouterLink class="nav-btn-main" to="/about">About Us</RouterLink>
+          <a 
+            class="nav-btn-main"
+            href="/dpad_llc_resume.pdf"
+            target="_blank"
+            rel="noopener"
+          >
+            Resume
+          </a>
+        </div> 
       </nav>
     </div>
   </header>
@@ -83,10 +87,12 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
 
 #footer {
   margin-top: 30px;
-  width: 1000px;
+  width: 100%;
+  max-width: 1000px;
   border-radius: 20px;
-  padding: 5px;
+  padding: 10px 40px;
   font-size: 14px;
+  text-align: center;
 }
 
 #footer-wrapper {
@@ -95,11 +101,19 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   margin: 0px auto;
 }
 
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 16px;
+}
+
 .nav-bar-wrapper {
   align-items: center;
   overflow: hidden;
   border-radius: 30px;
-  width: 700px; 
+  width: 100%;
+  max-width: 700px;
   font-size: 18px;
 }
 
@@ -148,6 +162,7 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   width: 100%;
   margin: 30px auto 20px; 
   text-align: center;     
+  z-index: 9999;
 }
 
 #social-media-icon-row {
@@ -155,11 +170,11 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
 }
 
 .social-media-icon {
-  width: 32px;
+  width: 40px;
   height: auto;
-  margin: 0 12px;
+  margin: 0 20px;
   vertical-align: middle;
-  border-radius: 16px;
+  border-radius: 20px;
 
   box-shadow: 0 0 0 0 var(--cyan);
   transition: 
@@ -171,5 +186,16 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   box-shadow: 0 0 8px 4px var(--cyan);
   transform: scale(1.12);   
   cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  nav {
+    flex-direction: column;
+  }
+
+  .nav-btn-main {
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>
