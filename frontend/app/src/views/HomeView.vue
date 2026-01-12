@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import DpadLogo from "@/components/art/DpadLogo.vue";
 
+
 const visitorCount = ref<number>(0);
 const fetchVisitorCount = async () => {
   const resp = await fetch("/api/data", {
@@ -18,7 +19,7 @@ const fetchVisitorCount = async () => {
 }
 
 
-let loopInterval: number | null = null;
+let loopInterval: number | undefined = undefined;
 onMounted(async () => {
   await fetchVisitorCount(); 
   loopInterval = setInterval(async () => {

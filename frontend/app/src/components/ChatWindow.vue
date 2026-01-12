@@ -155,9 +155,6 @@ onMounted(async () => {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  /* 
-  overflow: hidden; 
-  */      
 }
 
 .chat-window {
@@ -184,7 +181,7 @@ onMounted(async () => {
 .message {
   max-width: 82%;             
   padding: 0.9rem 1.3rem;
-  border-radius: 1.3rem;
+  border-radius: 1.0rem;
   font-size: 14px;;
   line-height: 1.45;
   overflow-wrap: break-word;  
@@ -197,7 +194,7 @@ onMounted(async () => {
   margin-left: auto;
   background: var(--cyan);
   color: black;
-  border-bottom-right-radius: 0.4rem;
+  border-bottom-right-radius: 0;
   box-shadow: 
     0px 0px 10px 7px var(--green) inset,
     0px 0px 5px 3px var(--green);
@@ -207,7 +204,7 @@ onMounted(async () => {
   margin-right: auto;
   background: var(--yellow);
   color: black;
-  border-bottom-left-radius: 0.4rem;
+  border-bottom-left-radius: 0;
   box-shadow: 
     0px 0px 10px 5px var(--red) inset,
     0px 0px 5px 3px var(--red);

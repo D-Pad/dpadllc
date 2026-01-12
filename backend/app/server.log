@@ -160,3 +160,18 @@ INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:10:54] "POST /data HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:10:59] "POST /data HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:11:19] "POST /data HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:11:39] "POST /data HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3000
+ * Running on http://172.29.0.3:3000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 791-882-157
+INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:24:44] "POST /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:24:47] "POST /welcome HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:25:04] "POST /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:25:12] "POST /chat HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:25:24] "POST /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:25:44] "POST /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jan/2026 10:26:04] "POST /data HTTP/1.1" 200 -
