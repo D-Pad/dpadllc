@@ -6,7 +6,7 @@ const messages = ref<{ role: 'user' | 'system'; content: string }[]>([])
 const userInput = ref('')
 const textarea = ref<HTMLTextAreaElement | null>(null)
 const chatWindow = ref<HTMLDivElement | null>(null)
-const hasEnteredPrompt = ref<Boolean>(false);
+const hasEnteredPrompt = ref<boolean>(false);
 
 watch(messages, async () => {
   await nextTick();
