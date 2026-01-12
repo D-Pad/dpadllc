@@ -1,6 +1,10 @@
 from app_server import start_server
 
 
-if __name__ == "__main__":
+def main():
     start_server()
+
+
+if __name__ == "__main__":
+    main() 
 

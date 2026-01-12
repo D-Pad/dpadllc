@@ -8,7 +8,9 @@
     
     <div class="page-content">
 
-      <h1>About D-Pad LLC</h1>
+      <div id="header-wrapper">
+        <h1>About D-Pad LLC</h1>
+      </div>
 
       <p>
         D-Pad LLC is a small, independent software development and graphic 
@@ -58,9 +60,13 @@ a {
 }
 
 p {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 24px;
+  font-family: monospace;
 } 
+
+#header-wrapper {
+  display: flex;
+}
 
 .page-wrapper {
   display: flex;
@@ -69,13 +75,11 @@ p {
   max-width: 1200px; 
   margin: 0 auto;        
   padding: 0 20px;       
+  height: 100%;
 }
 
 .page-content {
-  max-width: 50%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  max-width: 75%;
 }
 </style>
 

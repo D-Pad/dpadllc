@@ -1,14 +1,68 @@
 <script setup lang="ts">
-import ChatWindow from "@/components/ChatWindow.vue";  
+import { ref, onMounted, onUnmounted } from "vue";
+
+const visitorCount = ref<number>(0);
+const fetchVisitorCount = async () => {
+  const resp = await fetch("/api/data", {
+    method: "POST", 
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(
+      {
+        dataId: "visitorCount"
+      }
+    )
+  });
+  const data = await resp.json();
+  visitorCount.value = data.visitorCount;
+}
+
+
+let loopInterval: number | null = null;
+onMounted(async () => {
+  await fetchVisitorCount(); 
+  loopInterval = setInterval(async () => {
+    await fetchVisitorCount(); 
+  }, 20000);
+});
+
+
+onUnmounted(() => {
+  clearInterval(loopInterval);
+});
 </script>
 
 <template>
-
-  <ChatWindow />
-
+  <div id="content-wrapper">
+    
+    <div id="logo-header">
+      <h1>Logo Here</h1>
+    </div>
+    
+    <div id="visitor-count-container">
+      <p>Visitor count: {{ visitorCount }}</p> 
+    </div> 
+  </div>
 </template>
 
-<style scoped>
-  
-</style>
+<style scoped> 
+#logo-header {
+  display: flex; 
+  margin: 15px auto;
+  width: 100%;
+  justify-content: center;
+}
+
+#content-wrapper {
+  justify-content: center;
+  margin: 10px auto;
+  width: 50%;
+}
+
+#visitor-count-container {
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--pink);
+}
+</style> 
 

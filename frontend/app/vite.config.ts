@@ -16,6 +16,9 @@ export default defineConfig({
     },
   },
   server: {
+    allowedHosts: [
+      "dpadllc"
+    ], 
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

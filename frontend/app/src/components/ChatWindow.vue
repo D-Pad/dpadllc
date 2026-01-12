@@ -185,28 +185,32 @@ onMounted(async () => {
   max-width: 82%;             
   padding: 0.9rem 1.3rem;
   border-radius: 1.3rem;
-  font-size: 1rem;
+  font-size: 14px;;
   line-height: 1.45;
   overflow-wrap: break-word;  
   word-break: break-word;     
   hyphens: auto;              
-  width: fit-content;         
+  width: fit-content;  
 }
 
 .message.user {
   margin-left: auto;
-  background: var(--blue);
-  color: white;
+  background: var(--cyan);
+  color: black;
   border-bottom-right-radius: 0.4rem;
-  box-shadow: 0px 0px 10px 7px var(--cyan);
+  box-shadow: 
+    0px 0px 10px 7px var(--green) inset,
+    0px 0px 5px 3px var(--green);
 }
 
 .message.assistant {
   margin-right: auto;
-  background: var(--magenta);
-  color: white;
+  background: var(--yellow);
+  color: black;
   border-bottom-left-radius: 0.4rem;
-  box-shadow: 0px 0px 10px 5px var(--pink);
+  box-shadow: 
+    0px 0px 10px 5px var(--red) inset,
+    0px 0px 5px 3px var(--red);
 }
 
 .message-content {

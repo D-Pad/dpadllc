@@ -1,4 +1,4 @@
-from flask import Flask, Response, request, stream_with_context
+from flask import Flask, Response, request, stream_with_context, jsonify
 from flask_cors import CORS
 import requests
 
@@ -7,6 +7,7 @@ from json import loads, JSONDecodeError
 from threading import Thread
 from time import sleep
 from datetime import datetime
+from db_connection import DatabaseConnector
 
 
 app = Flask(__name__)
@@ -38,6 +39,8 @@ information is found on the resume page
 """
 
 MAX_MSG_COUNT = 5
+
+
 DAILY_LIMIT_MSG = """Daily message limit reached. This LLM runs on a server 
 without a GPU, and is not intended to be used as a puublic chatbot. It's only 
 purpose is to show the technical abilities of the website creator. We only 
@@ -114,15 +117,35 @@ chat_bot = ChatStateManager()
 @app.route("/welcome", methods=["POST"])
 def welcome():
 
+    DatabaseConnector().update_visitor_count(request.remote_addr)
+
     def welcome_msg_stream():
        for word in WELCOME_MSG.replace("\n", " ").split(" "):
            sleep(0.1) 
            yield bytes(f"{word} ", "utf-8")
-    
+
     return Response(
         stream_with_context(welcome_msg_stream()),
         content_type="text/event-stream"
     )
+
+
+@app.route("/data", methods=["POST"])
+def data_fetch():
+    params = request.json
+    
+    if "dataId" not in params:
+        return "Invalid input parameters"
+    data_id = params["dataId"]
+
+    if data_id == "visitorCount":
+        db = DatabaseConnector()
+        visitors = db.get_visitors()
+        return jsonify({
+            "visitorCount": len(visitors)
+        })
+
+    return ""
 
 
 @app.route("/chat", methods=["POST"])

@@ -9,6 +9,7 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
     <div class="nav-bar-wrapper visible-div">
       <nav>
         <RouterLink class="nav-btn-main" to="/">Home</RouterLink>
+        <RouterLink class="nav-btn-main" to="/chat">Chat</RouterLink>
         <RouterLink class="nav-btn-main" to="/about">About Us</RouterLink>
         <a 
           class="nav-btn-main"
@@ -23,7 +24,11 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   </header>
 
   <main id="main-content-section" class="visible-div-light">
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <keep-alive> 
+        <component :is="Component" /> 
+      </keep-alive>
+    </RouterView> 
   </main>
 
   <div id="footer-wrapper">
@@ -78,8 +83,10 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
 
 #footer {
   margin-top: 30px;
-  width: 600px;
+  width: 1000px;
   border-radius: 20px;
+  padding: 5px;
+  font-size: 14px;
 }
 
 #footer-wrapper {
@@ -92,7 +99,8 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   align-items: center;
   overflow: hidden;
   border-radius: 30px;
-  width: 400px; 
+  width: 700px; 
+  font-size: 18px;
 }
 
 .crt-overlay {

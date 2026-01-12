@@ -10,7 +10,8 @@ body {
   min-height: 80vh;
   background-color: var(--background);
   color: var(--foreground, #1FA6A6);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Press Start 2P', monospace, system-ui, sans-serif;
+  font-size: 12px;  
   display: flex;
   justify-content: center;
 }
@@ -34,7 +35,7 @@ footer {
   width: 100%;
   justify-content: center;
   color: var(--red);
-  gap: 20px;
+  gap: 10px;
 }
 
 main {
