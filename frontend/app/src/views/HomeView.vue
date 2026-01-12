@@ -40,7 +40,7 @@ onUnmounted(() => {
     <DpadLogo /> 
     
     <div id="visitor-count-container">
-      <p>Visitor count: {{ visitorCount }}</p> 
+      <p>Player Count: {{ visitorCount }}</p> 
     </div> 
   
   </div>
@@ -61,7 +61,7 @@ onUnmounted(() => {
   justify-content: center;
   align-content: center;
   margin: 30px auto;
-  width: 50%;
+  width: 80%;
   height: 70%;
 }
 
@@ -70,6 +70,12 @@ onUnmounted(() => {
   justify-content: center;
   font-size: 20px;
   color: var(--pink);
+}
+
+@media (max-width: 640px) {
+  #visitor-count-container {
+    font-size: 12px;
+  } 
 }
 </style> 
 

@@ -83,6 +83,7 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   align-items: center;
   margin-top: 10px; 
   padding: 5px;
+  position: relative;
 }
 
 #footer {
@@ -189,6 +190,11 @@ nav {
 }
 
 @media (max-width: 640px) {
+  
+  #footer, .nav-bar-wrapper {
+    font-size: 8px;
+  }
+
   nav {
     flex-direction: column;
   }
@@ -196,6 +202,8 @@ nav {
   .nav-btn-main {
     width: 100%;
     text-align: center;
+    font-size: 12px; 
   }
+
 }
 </style>

@@ -6,7 +6,7 @@ const messages = ref<{ role: 'user' | 'system'; content: string }[]>([])
 const userInput = ref('')
 const textarea = ref<HTMLTextAreaElement | null>(null)
 const chatWindow = ref<HTMLDivElement | null>(null)
-
+const hasEnteredPrompt = ref<bool>(false);
 
 watch(messages, async () => {
   await nextTick();
@@ -41,7 +41,11 @@ const fetchAiResponse = async (prompt: string, endpoint: string) => {
     const payload = {
       prompt: prompt
     };
-    
+   
+    if (endpoint === "chat" && !hasEnteredPrompt.value) {
+      hasEnteredPrompt.value = true;
+    }
+
     const response = await fetch(`/api/${endpoint}`, {
       method: "POST",
       headers: {
@@ -104,14 +108,17 @@ onMounted(async () => {
 </script>
 
 <template>
+  
   <div class="chat-container">
 
     <div class="chat-window" id="chat-window" ref="chatWindow">
+      
       <div 
         v-for="(msg, index) in messages"
         :key="index" 
         class="message-wrapper"
       >
+        
         <div 
           class="message" 
           :class="{ user: msg.role === 'user', assistant: msg.role !== 'user' }"
@@ -123,9 +130,14 @@ onMounted(async () => {
           </div>
       
         </div>
+      
       </div>
+    
     </div>
 
+  </div>
+
+  <div id="chat-footer">
     <div v-if="!fetchingResponse" class="input-container">
       <textarea
         ref="textarea"
@@ -139,26 +151,34 @@ onMounted(async () => {
       <button @click="sendMessage">Send</button>
     </div>
 
-    <div id="footer-msg">
+    <div v-if="!hasEnteredPrompt && !fetchingResponse" id="footer-msg">
       <span id="footer-text">
         Try "Tell me about yourself." or "What is this?"
       </span>
     </div>
-  </div>
+  </div> 
+
 </template>
 
 <style scoped>
-.chat-container {
-  height: 75vh;
+.chat-container, #chat-footer {
+  height: 75dhv; 
+  max-height: 75dvh;
   width: 100%;
-  max-width: 900px;           
+  max-width: 900px;
   margin: 0 auto;
+}
+
+.chat-container {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 60px;
 }
 
 .chat-window {
-  flex: 1;
+  flex: 1 1 auto;
   overflow-y: auto;
   overflow-x: hidden;       
   display: flex;
@@ -166,7 +186,19 @@ onMounted(async () => {
   flex-direction: column;
   gap: 1.2rem;
   width: 100%;
-  min-height: 0;
+  height: 100%;
+}
+
+#chat-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 10px;
 }
 
 .chat-window::-webkit-scrollbar {
@@ -182,7 +214,7 @@ onMounted(async () => {
   max-width: 82%;             
   padding: 0.9rem 1.3rem;
   border-radius: 1.0rem;
-  font-size: 14px;;
+  font-size: 16px;
   line-height: 1.45;
   overflow-wrap: break-word;  
   word-break: break-word;     
@@ -266,5 +298,21 @@ onMounted(async () => {
   justify-content: center;
   padding-top: 10px; 
   color: #777;
+}
+
+@media (max-width: 640px) {
+  .chat-container {
+    height: 80dvh;
+    max-height: 80dvh;
+  }
+
+  .message {
+    font-size: 12px;
+  }
+
+  #footer-msg {
+    font-size: 10px;
+    text-align: center;
+  }
 }
 </style>

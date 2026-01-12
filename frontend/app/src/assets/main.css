@@ -107,3 +107,9 @@ main {
   margin: 0px auto;
 }
 
+@media (max-width: 640px) {
+  #app {
+    min-height: 50%;
+  } 
+}
+
