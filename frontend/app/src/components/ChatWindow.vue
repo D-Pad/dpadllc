@@ -198,7 +198,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-bottom: 10px;
+  padding: 10px 15px;
 }
 
 .chat-window::-webkit-scrollbar {
@@ -280,7 +280,7 @@ onMounted(async () => {
   padding: 12px 16px;
   border: 1px solid var(--red, #ff0040);
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--background);
   color: #fff;
   font-size: 16px;
   outline: none;
@@ -302,8 +302,8 @@ onMounted(async () => {
 
 @media (max-width: 640px) {
   .chat-container {
-    height: 80dvh;
-    max-height: 80dvh;
+    height: 45dvh;
+    max-height: 45dvh;
   }
 
   .message {
@@ -313,6 +313,10 @@ onMounted(async () => {
   #footer-msg {
     font-size: 10px;
     text-align: center;
+  }
+
+  #user-prompt {
+    font-size: 12px;
   }
 }
 </style>

@@ -84,6 +84,7 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
   margin-top: 10px; 
   padding: 5px;
   position: relative;
+  overflow: hidden;
 }
 
 #footer {
@@ -193,6 +194,10 @@ nav {
   
   #footer, .nav-bar-wrapper {
     font-size: 8px;
+  }
+
+  #main-content-section {
+    max-height: 40vh; 
   }
 
   nav {

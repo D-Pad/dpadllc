@@ -50,37 +50,65 @@
 
 
 <style scoped>
-h1 {
-  color: var(--cyan);
-  margin: 5px auto;
-}
-
-a {
-  margin: 0px auto;
-}
-
-p {
-  font-size: 24px;
-  font-family: monospace;
-} 
-
-#header-wrapper {
-  display: flex;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .page-wrapper {
   display: flex;
   justify-content: center;
-  width: 100%;           
-  max-width: 1200px; 
-  padding: 0 20px;       
-  height: 100%;
-  align-items: center; 
-  margin: auto;        
+  align-items: center;    
+  width: 100%;
+  max-width: 1200px;
+  height: 75dvh;          
+  max-height: 75dvh;
+  margin: 0 auto;
+  padding: 0 20px;
+  overflow: hidden;       
+  box-sizing: border-box;
 }
 
 .page-content {
-  max-width: 75%;
+  width: 100%;                
+  height: 100%;               
+  overflow-y: auto;           
+  overflow-x: hidden;
+
+  -webkit-overflow-scrolling: touch;
+
+  padding: 1.5rem;   
+  box-sizing: border-box;
+}
+
+p {
+  font-size: 24px;
+  font-family: monospace;
+  margin: 1em 0;
+  line-height: 1.5;
+}
+
+h1 {
+  color: var(--cyan);
+  margin: 5px auto;
+}
+
+#header-wrapper {
+  display: flex;
+  justify-content: center;  
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .page-content p {
+    font-size: 16px;    
+  }
+
+  .page-content h1 {
+    font-size: 18px;    
+  }
 }
 </style>
 

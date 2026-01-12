@@ -109,7 +109,7 @@ main {
 
 @media (max-width: 640px) {
   #app {
-    min-height: 50%;
+    min-height: 70vh;
   } 
 }
 
