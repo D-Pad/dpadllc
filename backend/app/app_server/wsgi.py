@@ -4,10 +4,16 @@ import requests
 
 from os import environ
 from json import loads, JSONDecodeError
-from threading import Thread
+from threading import Thread, Event
 from time import sleep
 from datetime import datetime
+import logging
+
 from db_connection import DatabaseConnector
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename="server.log", level=logging.INFO)
 
 
 app = Flask(__name__)
@@ -22,11 +28,12 @@ He specializes in frontend SPA development, database design, Linux server
 provisioning , and Docker-based deployments. Strong background in Python, 
 Flask, Vue.js, Linux, and real-time event-driven systems.
 
-As a company, we have experience working with automated trading systems, have 
-lots of knowledge on trading concepts, and familiararity with trading 
-instruments such as futures and options. Vast knowledge of block chain 
-technology and Web3 concepts as well as computer hardware and 
-I.T. in general
+As a company, we have experience building algo-trading tools (but cannot share
+any information on this for legal reasons), have lots of knowledge on trading 
+concepts, and familiararity with trading instruments such as futures and 
+options. Vast knowledge of block chain technology and Web3 concepts including 
+smart contract development. We also have experience diagnosing and repairing 
+hardware issues. 
 
 The owners favorite retro video game series is Donkey Kong for the SNES. His 
 favorite modern game is Overwatch. The name D-Pad comes from the owners love 
@@ -61,9 +68,11 @@ navigation bar above.
 API_PORT = int(environ.get("WEBPAGE_API_PORT", 8082))
 
 
+"TEST"
 class ChatStateManager:
 
     def __init__(self) -> None:
+        
         self.clients = {}
         self.urls = {
             "prompt": "http://llama:7000/completion",
@@ -72,7 +81,8 @@ class ChatStateManager:
 
         def client_manager():
             timeout = 86440  # 1 day 
-            while True:
+            
+            while not self.kill_thread_event.is_set():
                 
                 ts = datetime.now().timestamp()
                 for client_ip in [i for i in self.clients.keys()]:
@@ -82,7 +92,9 @@ class ChatStateManager:
 
                 sleep(1)
 
-        self.client_management_thread = Thread(target=client_manager)
+        self.kill_thread_event = Event() 
+        self.client_management_thread = Thread(target=client_manager,
+                                               daemon=True)
         self.client_management_thread.start()
 
     def add_new_client(self, ip: str):
@@ -109,6 +121,9 @@ class ChatStateManager:
     
     def client_exists(self, ip: str) -> bool:
         return ip in self.clients
+
+    def trigger_kill_thread_event(self):
+        self.kill_thread_event.set()
 
 
 chat_bot = ChatStateManager()
@@ -229,7 +244,11 @@ def health_check():
 
 
 def start_server():
-    app.run(host="0.0.0.0", 
-            port=API_PORT, 
-            debug=True) 
+    try:  
+        app.run(host="0.0.0.0", 
+                port=API_PORT, 
+                debug=True) 
+    except KeyboardInterrupt:
+        logger.info("\033[1;31mKeyboard Interupt. Killing thread\033[0m")
+        chat_bot.trigger_kill_thread_event()
 

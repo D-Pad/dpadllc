@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
+import DpadLogo from "@/components/art/DpadLogo.vue";
 
 const visitorCount = ref<number>(0);
 const fetchVisitorCount = async () => {
@@ -32,16 +33,17 @@ onUnmounted(() => {
 </script>
 
 <template>
+  
   <div id="content-wrapper">
     
-    <div id="logo-header">
-      <h1>Logo Here</h1>
-    </div>
+    <DpadLogo /> 
     
     <div id="visitor-count-container">
       <p>Visitor count: {{ visitorCount }}</p> 
     </div> 
+  
   </div>
+
 </template>
 
 <style scoped> 
@@ -53,9 +55,13 @@ onUnmounted(() => {
 }
 
 #content-wrapper {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 10px auto;
+  align-content: center;
+  margin: 30px auto;
   width: 50%;
+  height: 70%;
 }
 
 #visitor-count-container {
