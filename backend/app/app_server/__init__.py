@@ -4,5 +4,5 @@ __all__ = [
 ]
 
 
-from .app import start_server, app
+from .wsgi import start_server, app
 

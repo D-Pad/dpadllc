@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { fetchAiResponse } from "@/assets/scripts/fetch_data.ts"; 
+import { ref, onMounted, nextTick, watch } from 'vue'
 
 
-const messages = ref<string[]>([])
+const messages = ref<{ role: 'user' | 'system'; content: string }[]>([])
 const userInput = ref('')
 const textarea = ref<HTMLTextAreaElement | null>(null)
+const chatWindow = ref<HTMLDivElement | null>(null)
+
+
+watch(messages, async () => {
+  await nextTick();
+  const el = chatWindow.value;
+  if (el) el.scrollTop = el.scrollHeight;
+}, { deep: true });
 
 
 const resizeTextarea = () => {
@@ -19,51 +26,66 @@ const resizeTextarea = () => {
 const sendMessage = () => {
   if (!userInput.value.trim()) return
   messages.value.push({ role: "user", content: userInput.value });
-  fetchAiResponse(userInput.value);
+  fetchAiResponse(userInput.value, "chat");
   userInput.value = ''
 }
 
 
-const API_URL = import.meta.env.VITE_API_URL;
-
-
 const fetchingResponse = ref(false);
-const fetchAiResponse = async (prompt: str) => {
+const fetchAiResponse = async (prompt: string, endpoint: string) => {
 
-  fetchingResponse.value = true;
-  messages.value.push({ role: "system", content: "" });
-  
-  const payload = {
-    prompt: prompt
-  };
-  
-  const response = await fetch(`${API_URL}/chat`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+  try {
+    fetchingResponse.value = true;
+    messages.value.push({ role: "system", content: "" });
+    
+    const payload = {
+      prompt: prompt
+    };
+    
+    const response = await fetch(`/api/${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
 
-  if (!response.ok) {
-    throw new Error(`API Request error: ${resp.status}`);
+    if (!response.ok) {
+      throw new Error(`API Request error: ${response.status}`);
+    }
+
+    if (!response.body) {
+      throw new Error('Response body is null')
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    const index = messages.value.length - 1;
+    while (true) {
+      
+      const { value, done } = await reader.read();
+      if (done) break;
+      
+      const chunk = decoder.decode(value, { stream: true });
+
+      if (messages.value[index]) {
+        messages.value[index].content += chunk; 
+      }
+    };
+
+  } catch (error) {
+    console.error("LLM response failed", error);
+  } finally {
+    fetchingResponse.value = false;
   }
-
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-
-  const index = messages.value.length - 1;
-  while (true) {
     
-    const { value, done } = await reader.read();
-    if (done) break;
-    
-    const chunk = decoder.decode(value);
-    messages.value[index].content += chunk; 
-  };
+  await nextTick();
+  const el = chatWindow.value;
+  if (el) el.scrollTop = el.scrollHeight;
 
-  fetchingResponse.value = false;
 }
+
 
 const formatMessage = (text: string) => {
   return text
@@ -74,11 +96,17 @@ const formatMessage = (text: string) => {
       '<a href="$&" target="_blank" rel="noopener">$&</a>'
     );
 }
+
+
+onMounted(async () => {
+  await fetchAiResponse("", "welcome");
+});
 </script>
 
 <template>
   <div class="chat-container">
-    <div class="chat-window" id="chat-window">
+
+    <div class="chat-window" id="chat-window" ref="chatWindow">
       <div 
         v-for="(msg, index) in messages"
         :key="index" 
@@ -127,7 +155,9 @@ const formatMessage = (text: string) => {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  overflow: hidden;          
+  /* 
+  overflow: hidden; 
+  */      
 }
 
 .chat-window {
@@ -139,6 +169,7 @@ const formatMessage = (text: string) => {
   flex-direction: column;
   gap: 1.2rem;
   width: 100%;
+  min-height: 0;
 }
 
 .chat-window::-webkit-scrollbar {

@@ -72,12 +72,14 @@ import AlienHunter from "@/components/art/AlienBounty.vue"
 <style scoped>
 #main-content-section {
   align-items: center;
+  margin-top: 10px; 
   padding: 5px;
 }
 
 #footer {
   margin-top: 30px;
   width: 600px;
+  border-radius: 20px;
 }
 
 #footer-wrapper {

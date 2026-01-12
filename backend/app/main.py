@@ -1,4 +1,4 @@
-from app_server import start_server, app
+from app_server import start_server
 
 
 if __name__ == "__main__":

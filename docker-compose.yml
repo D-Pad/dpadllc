@@ -2,26 +2,30 @@ services:
  
   dpad_llc_home:
     build: ./frontend
-    container_name: dpad_frontend 
-    hostname: dpad_frontend 
+    container_name: dpad_llc_home 
+    hostname: dpad_llc_home 
     restart: always
     ports: 
       - 80:80 
       - 443:443 
     networks:
       - dpad_llc
- 
+  
   dpad_llc_api:
     build: ./backend
-    container_name: dpad_backend 
-    hostname: dpad_backend 
+    container_name: dpad_llc_api 
+    hostname: dpad_llc_api 
     restart: always
     ports:
       - 8082:8082
     environment:
       - WEBPAGE_API_PORT=8082
+      - LOG_PATH=/app/log_files
     networks:
       - dpad_llc  
+    volumes:
+      - ./backend/app:/app
+      - ./backend/log_files:/app/log_files/
 
   llama:
     image: ghcr.io/ggml-org/llama.cpp:server 
