@@ -107,6 +107,25 @@ main {
   margin: 0px auto;
 }
 
+.btn {
+  background-color: var(--pink);
+  padding: 20px;
+  border-radius: 7px;
+  margin: 10px auto;
+  font-size: 20px;
+  font-family: 'Press Start 2P', monospace, system-ui, sans-serif;
+  box-shadow: 0 0 0px 0px var(--cyan);
+  transition: 
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 7px 2px var(--cyan);
+  cursor: pointer;
+}
+
 @media (max-width: 640px) {
   #app {
     min-height: 70vh;

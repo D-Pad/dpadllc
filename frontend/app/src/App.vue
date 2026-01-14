@@ -86,6 +86,8 @@ onMounted(async () => {
 
 <style scoped>
 #main-content-section {
+  display: flex;
+  height: 100%;
   align-items: center;
   margin-top: 10px; 
   padding: 5px;

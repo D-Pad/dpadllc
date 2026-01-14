@@ -19,6 +19,11 @@ const fetchVisitorCount = async () => {
 }
 
 
+const pageMode = ref("initial");
+const setMode = (newMode) => {
+  pageMode.value = newMode;
+}
+
 let loopInterval: number | undefined = undefined;
 onMounted(async () => {
   await fetchVisitorCount(); 
@@ -34,14 +39,40 @@ onUnmounted(() => {
 </script>
 
 <template>
-  
+ 
   <div id="content-wrapper">
     
-    <DpadLogo /> 
+    <template v-if="pageMode === 'initial'">
+      
+      <DpadLogo /> 
+      
+      <div id="visitor-count-container">
+        <p>Player Count: {{ visitorCount }}</p> 
+      </div>
     
-    <div id="visitor-count-container">
-      <p>Player Count: {{ visitorCount }}</p> 
-    </div> 
+      <div id="btn-wrapper" @click="setMode('login')">
+        <button class="btn">Login</button>
+      </div>
+    
+    </template>
+
+    <template v-else-if="pageMode === 'login'">
+     
+      <div id="login-form-wrapper">
+
+        <div class="form-row">
+          <span>User Name:</span>
+          <input type="text">
+        </div>
+        
+        <div class="form-row">
+          <span>Password:</span>
+          <input type="text">
+        </div>
+
+      </div>
+
+    </template>
   
   </div>
 
@@ -70,6 +101,17 @@ onUnmounted(() => {
   justify-content: center;
   font-size: 20px;
   color: var(--pink);
+}
+
+#btn-wrapper {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+
+.form-row {
+  display: flex;
+  align-content: center;
 }
 
 @media (max-width: 640px) {
