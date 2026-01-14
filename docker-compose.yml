@@ -27,7 +27,9 @@ services:
       - dpad_llc  
     volumes:
       - ./backend/app:/app
-  
+    depends_on:
+      - dpad_llc_db
+
   dpad_llc_db:
     image: mariadb:latest
     container_name: dpad_llc_db 

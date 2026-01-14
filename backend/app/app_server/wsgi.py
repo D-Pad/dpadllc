@@ -9,7 +9,7 @@ from time import sleep
 from datetime import datetime
 import logging
 
-from db_connection import DatabaseConnector
+from db_connection import DatabaseConnector, UserManager, user_manager
 
 
 logger = logging.getLogger(__name__)
@@ -57,18 +57,18 @@ purposes.
 """
 
 
-WELCOME_MSG = f"""Welcome to the home page of D-Pad LLC! This is the owner speaking. You can ask our chat bot questions about the company if you'd like, but 
-you're limited to only {MAX_MSG_COUNT} prompts per day. This app runs on my 
-home server, and is more of a technical ability demonstration than a public 
-service. Feel free to read our "About Us" page, or download my resume from the
-navigation bar above.
+WELCOME_MSG = f"""Welcome to the home page of D-Pad LLC! This is the owner 
+speaking. You can ask our chat bot questions about the company if you'd like, 
+but you're limited to only {MAX_MSG_COUNT} prompts per day. This app runs on 
+my home server, and is more of a technical ability demonstration than a 
+public service. Feel free to read our "About Us" page, or download my resume 
+from the navigation bar above.
 """
 
 
 API_PORT = int(environ.get("WEBPAGE_API_PORT", 8082))
 
 
-"TEST"
 class ChatStateManager:
 
     def __init__(self) -> None:
@@ -129,38 +129,17 @@ class ChatStateManager:
 chat_bot = ChatStateManager()
 
 
-@app.route("/welcome", methods=["POST"])
-def welcome():
-
-    DatabaseConnector().update_visitor_count(request.remote_addr)
-
-    def welcome_msg_stream():
-       for word in WELCOME_MSG.replace("\n", " ").split(" "):
-           sleep(0.1) 
-           yield bytes(f"{word} ", "utf-8")
-
-    return Response(
-        stream_with_context(welcome_msg_stream()),
-        content_type="text/event-stream"
-    )
+def get_client_ip(request):
+    # Prefer the Cloudflare header
+    if "CF-Connecting-IP" in request.headers:
+        return request.headers["CF-Connecting-IP"]
+    return request.remote_addr
 
 
-@app.route("/data", methods=["POST"])
-def data_fetch():
-    params = request.json
-    
-    if "dataId" not in params:
-        return "Invalid input parameters"
-    data_id = params["dataId"]
-
-    if data_id == "visitorCount":
-        db = DatabaseConnector()
-        visitors = db.get_visitors()
-        return jsonify({
-            "visitorCount": len(visitors)
-        })
-
-    return ""
+@app.route("/add_visitor_count")
+def add_visitor_count():
+    DatabaseConnector().update_visitor_count(get_client_ip(request))
+    return "", 200
 
 
 @app.route("/chat", methods=["POST"])
@@ -171,7 +150,7 @@ def chat():
     if "prompt" not in data:
         return "Invalid request format"
 
-    CLIENT_IP = request.remote_addr
+    CLIENT_IP = get_client_ip(request)
 
     if not chat_bot.client_exists(CLIENT_IP):
         chat_bot.add_new_client(CLIENT_IP)
@@ -238,9 +217,72 @@ def chat():
     )
 
 
+@app.route("/data", methods=["POST"])
+def data_fetch():
+    params = request.json
+    
+    if "dataId" not in params:
+        return "Invalid input parameters"
+    data_id = params["dataId"]
+
+    if data_id == "visitorCount":
+        db = DatabaseConnector()
+        visitors = db.get_visitors()
+        return jsonify({
+            "visitorCount": len(visitors)
+        })
+
+    return ""
+
+
 @app.route("/health")
 def health_check():
     return "Server is up"
+
+
+@app.route("/user", methods=["POST"])
+def register_user():
+    data = request.json
+
+    username = data.get("username")
+    password = data.get("password")
+    mode = data.get("mode")
+
+    if not all([username, password, mode]):
+        return "Must provide 'username', 'password', and 'mode'", 500
+
+    user_mgmt = UserManager()
+    
+    if mode == "register":
+        added = user_mgmt.add_new_user(username, password)
+        if added: 
+            return "User added\n"
+        else:
+            return "User already exists\n", 500
+
+    elif mode == "login":
+        verified = user_mgmt.verify_password(username, password)
+        if verified:
+            return "Logged in\n"
+        else:
+            return "Verification failed\n", 500
+
+    else:
+        return f"Unknown operation mode: '{mode}'", 500
+
+
+@app.route("/welcome", methods=["POST"])
+def welcome():
+
+    def welcome_msg_stream():
+       for word in WELCOME_MSG.replace("\n", " ").split(" "):
+           sleep(0.1) 
+           yield bytes(f"{word} ", "utf-8")
+
+    return Response(
+        stream_with_context(welcome_msg_stream()),
+        content_type="text/event-stream"
+    )
 
 
 def start_server():

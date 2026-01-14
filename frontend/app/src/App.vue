@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import AlienHunter from "@/components/art/AlienBounty.vue"
+
+
+onMounted(async () => {
+  const resp = await fetch("/api/add_visitor_count");
+});
 </script>
 
 <template>
