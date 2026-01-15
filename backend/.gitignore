@@ -1,4 +1,5 @@
 __pycache__
 log_files/
 app/server.log
+app/invite_codes.txt
 

@@ -244,31 +244,52 @@ def health_check():
 def register_user():
     data = request.json
 
+    print("RECEIVED", data)
     username = data.get("username")
     password = data.get("password")
     mode = data.get("mode")
 
+    response = {
+        "reason": "",
+        "status": 200
+    }
+
     if not all([username, password, mode]):
-        return "Must provide 'username', 'password', and 'mode'", 500
+        response["reason"] = "Must provide 'username', 'password', and 'mode'"
+        response["status"] = 200 
+        return jsonify(response) 
 
     user_mgmt = UserManager()
     
     if mode == "register":
-        added = user_mgmt.add_new_user(username, password)
-        if added: 
-            return "User added\n"
+        invite_code = data.get("inviteCode") 
+        conf_password = data.get("passwordConf")
+        
+        if password == conf_password:
+            success, reason = user_mgmt.add_new_user(username, 
+                                                     password,
+                                                     invite_code)
         else:
-            return "User already exists\n", 500
+            response["reason"] = "Passwords do not match"
+            response["status"] = 500
+
+        if not success: 
+            response["status"] = 500 
+        response["reason"] = reason 
 
     elif mode == "login":
         verified = user_mgmt.verify_password(username, password)
         if verified:
-            return "Logged in\n"
+            response["reason"] = "Logged in" 
         else:
-            return "Verification failed\n", 500
+            response["status"] = 500 
+            response["reason"] = "Invalid password" 
 
     else:
-        return f"Unknown operation mode: '{mode}'", 500
+        response["reason"] = f"Unknown operation mode: '{mode}'"
+        response["status"] = 500 
+
+    return jsonify(response)
 
 
 @app.route("/welcome", methods=["POST"])

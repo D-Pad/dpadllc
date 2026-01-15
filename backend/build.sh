@@ -16,7 +16,7 @@
 # App start
 source /usr/local/venvs/webpage/bin/activate
 cd app
-python main.py
+python main.py $@
 deactivate
 
 

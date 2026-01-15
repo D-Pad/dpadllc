@@ -26,6 +26,13 @@ TABLE_SCHEMAS = {
 
         UNIQUE KEY uq_username (username)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    """,
+
+    "invite_codes": """
+    CREATE TABLE IF NOT EXISTS invite_codes (
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        code_hash VARCHAR(255) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     """
 } 
 
