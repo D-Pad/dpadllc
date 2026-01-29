@@ -34,7 +34,6 @@ class UserManager:
         conn = self.db.get_connection(db="dpad_llc")
         ph = PasswordHasher()
 
-        print("USERNAME", username, "PASSWORD", password, "INVITE", invite_code)
         if self.user_exists(username, conn):
             return False, "Username already exists"
 

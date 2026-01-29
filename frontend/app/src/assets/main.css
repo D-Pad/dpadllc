@@ -129,6 +129,12 @@ main {
 @media (max-width: 640px) {
   #app {
     min-height: 70vh;
-  } 
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+
 }
 

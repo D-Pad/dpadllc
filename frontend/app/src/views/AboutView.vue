@@ -67,7 +67,7 @@ html, body {
   max-height: 75dvh;
   margin: 0 auto;
   padding: 0 20px;
-  overflow: hidden;       
+  overflow: hidden;
   box-sizing: border-box;
 }
 
@@ -109,6 +109,11 @@ h1 {
   .page-content h1 {
     font-size: 18px;    
   }
+
+  .page-wrapper {
+    max-height: 40vh;
+  }
+
 }
 </style>
 

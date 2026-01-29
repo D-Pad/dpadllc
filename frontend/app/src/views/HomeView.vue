@@ -103,10 +103,12 @@ onUnmounted(() => {
       <div id="visitor-count-container">
         <p>Player Count: {{ visitorCount }}</p> 
       </div>
-   
+  
+      <!--
       <div id="btn-wrapper" @click="setMode('login')">
         <button class="btn">Login</button>
       </div>
+      -->
 
     </template>
 
@@ -295,6 +297,24 @@ onUnmounted(() => {
   #visitor-count-container {
     font-size: 12px;
   } 
+
+  .form-row, .form-row input {
+    font-size: 12px;
+    flex-direction: column;
+  }
+
+  .form-row {
+    height: 60vh;
+    overflow: hidden;
+  }
+
+  .login-form-wrapper {
+    margin: 0px auto;
+  }
+
+  #invite-code-wrapper {
+    font-size: 12px;
+  }
 }
 </style> 
 
