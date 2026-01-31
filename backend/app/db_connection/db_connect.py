@@ -1,41 +1,55 @@
-import mariadb 
+import psycopg2
 from os import environ
 
 
 TABLE_SCHEMAS = {
     "visitor_counter": """
     CREATE TABLE visitor_counter (
-        id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        ip_address INET6,
-        last_visit TIMESTAMP 
-          DEFAULT CURRENT_TIMESTAMP
-          ON UPDATE CURRENT_TIMESTAMP,
-        UNIQUE KEY uniq_ip (ip_address)
-    ) ENGINE=InnoDB;
+        id              BIGSERIAL PRIMARY KEY,
+        ip_address      INET,
+        last_visit      TIMESTAMPTZ 
+            DEFAULT CURRENT_TIMESTAMP
+            NOT NULL,
+
+        CONSTRAINT uniq_ip UNIQUE (ip_address)
+    );
+
+    -- Optional: make sure the timestamp is always updated on row change
+    CREATE OR REPLACE FUNCTION update_last_visit()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        NEW.last_visit = CURRENT_TIMESTAMP;
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER trg_visitor_counter_update_last_visit
+        BEFORE UPDATE ON visitor_counter
+        FOR EACH ROW
+        EXECUTE FUNCTION update_last_visit();
     """,
-    
+
     "user_login": """
     CREATE TABLE IF NOT EXISTS user_login (
-        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        id              BIGSERIAL PRIMARY KEY,
 
-        username VARCHAR(50) NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
+        username        VARCHAR(50) NOT NULL,
+        password_hash   VARCHAR(255) NOT NULL,
 
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        last_login TIMESTAMP NULL DEFAULT NULL,
+        created_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        last_login      TIMESTAMPTZ,
 
-        UNIQUE KEY uq_username (username)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        CONSTRAINT uq_username UNIQUE (username)
+    );
     """,
 
     "invite_codes": """
     CREATE TABLE IF NOT EXISTS invite_codes (
-        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        code_hash VARCHAR(255) NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        id          BIGSERIAL PRIMARY KEY,
+        code_hash   VARCHAR(255) NOT NULL
+    );
     """
-} 
-
+}
 
 log = print
 
@@ -55,25 +69,24 @@ class DatabaseConnector:
         if self._initialized:
             return
 
-        self.db_name = "dpad_llc"
+        self.db_name = "dpad_llc_website"
         self.host = environ.get("DB_HOST_NAME") 
         self.user_name = environ.get("DB_USER_NAME") 
         self.password = environ.get("DB_PASSWORD") 
+        self.port = int(environ.get("DB_PORT_NUM", 5432))
 
         if not all([self.host, self.user_name, self.password]):
             raise ValueError("Must provide DB host, user, and password")
 
         conn = self.get_connection()
-        databases = self.execute_query(conn, "SHOW DATABASES")
-      
-        if self.db_name not in databases:
-            q_string = f"CREATE DATABASE IF NOT EXISTS {self.db_name};"
-            self.execute_query(conn, q_string, False)
-            self.execute_query(conn, f"USE {self.db_name};", False)
-
-        self.execute_query(conn, f"USE {self.db_name};", False)
-        tables = self.execute_query(conn, "SHOW TABLES;")
         
+        tables = self.execute_query(conn, 
+                                    """
+                                    SELECT table_name
+                                    FROM information_schema.tables
+                                    WHERE table_schema = 'public'
+                                    """)
+       
         for table_name, schema in TABLE_SCHEMAS.items():
             if table_name not in tables:
                 self.execute_query(conn, schema, False)
@@ -98,7 +111,7 @@ class DatabaseConnector:
                 cur.execute(query_string, params)
             else:
                 cur.execute(query_string)
-            
+           
             if fetching:
                 data = [[j for j in i] for i in cur]
                 cur.close()
@@ -107,13 +120,17 @@ class DatabaseConnector:
                 else:
                     return data
 
-        except mariadb.ProgrammingError as e:
+            else:
+                connection.commit()
+
+
+        except psycopg2.ProgrammingError as e:
             log(f"PROGRAMMING ERROR:")
             log(f"{e}")
             log(f"Attempted query: {query_string[:300]}")
             raise ValueError('FAILED')
 
-        except mariadb.OperationalError as e:
+        except psycopg2.OperationalError as e:
             log(f"OPERATIONAL ERROR: {e}")
             log(f"Attempted query: {query_string[:300]}")
             exit()
@@ -123,25 +140,31 @@ class DatabaseConnector:
         Connect to the database
         """
         # Connect to the database
-        conn = mariadb.connect(
+        conn = psycopg2.connect(
             user=self.user_name, 
             password=self.password, 
             host=self.host,
-            database=db,
-            autocommit=True 
+            database=db if db is not None else self.db_name,
+            port=self.port
         )
         return conn
 
     def get_visitors(self) -> list[list]:
-        query = "SELECT * FROM visitor_counter;"
+        query = """
+        SELECT id, ip_address, last_visit
+        FROM visitor_counter; 
+        """
         conn = self.get_connection(self.db_name)
         return self.execute_query(conn, query)
 
     def update_visitor_count(self, user_ip: str):
-        query = """INSERT INTO visitor_counter (ip_address) 
-                    VALUES (?)
-                    ON DUPLICATE KEY 
-                      UPDATE last_visit = CURRENT_TIMESTAMP;"""
+        query = """
+        INSERT INTO visitor_counter (ip_address, last_visit)
+        VALUES (%s, CURRENT_TIMESTAMP)
+        ON CONFLICT ON CONSTRAINT uniq_ip
+        DO UPDATE SET
+            last_visit = CURRENT_TIMESTAMP;
+        """
         conn = self.get_connection(self.db_name)
         self.execute_query(conn, query, False, (user_ip,))
         conn.close()

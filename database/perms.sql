@@ -1,3 +1,0 @@
-CREATE USER 'root'@'%' IDENTIFIED BY 'dpad_db';
-GRANT ALL PRIVILAGES ON *.* TO 'root'@'%' IDENTIFIED BY 'dpad_db';
-FLUSH PRIVILAGES;

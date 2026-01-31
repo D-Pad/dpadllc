@@ -1,11 +1,16 @@
-from db_connection import UserManager 
+from db_connection import UserManager, DatabaseConnector
 
 from app_server import start_server
 from sys import argv
 
 
 def test_fn():
-    pass
+    db = DatabaseConnector()
+    with open("ips.txt", "r") as file:
+        ips = [i.split(',')[0] for i in file.readlines()]
+   
+    for ip in ips:
+        db.update_visitor_count(ip)
 
 
 def main():

@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     libssl-dev \
     libffi-dev \
-    libmariadb-dev \
+    libpq-dev \ 
     git \
     curl \
     && rm -rf /var/lib/apt/lists/*

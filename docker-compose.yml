@@ -30,20 +30,42 @@ services:
     depends_on:
       - dpad_llc_db
 
+  # dpad_llc_db:
+  #   image: mariadb:latest
+  #   container_name: dpad_llc_db 
+  #   restart: always
+  #   hostname: dpad_llc_db
+  #   volumes:
+  #     - type: bind 
+  #       source: ./database/.db
+  #       target: /var/lib/mysql
+  #     - type: bind 
+  #       source: ./database/perms.sql
+  #       target: /docker-entrypoint-initdb.d/perms.sql
+  #   environment:
+  #     - MARIADB_ROOT_PASSWORD=dpad_db
+  #   networks:
+  #     - dpad_llc
+
   dpad_llc_db:
-    image: mariadb:latest
+    image: postgres:latest
     container_name: dpad_llc_db 
     restart: always
-    hostname: dpad_llc_db
+    hostname: database
+    shm_size: 128mb
+    ports: 
+      - 5432:5432
     volumes:
       - type: bind 
-        source: ./database/.db
-        target: /var/lib/mysql
+        source: ./database/pgdata
+        target: /var/lib/postgresql
       - type: bind 
-        source: ./database/perms.sql
-        target: /docker-entrypoint-initdb.d/perms.sql
+        source: ./database/01-setup.sql
+        target: /docker-entrypoint-initdb.d/01-setup.sql
     environment:
-      - MARIADB_ROOT_PASSWORD=dpad_db
+      - POSTGRES_PASSWORD=dpad_db
+      - POSTGRES_USER=root 
+      - POSTGRES_DB=dpad_llc_website
     networks:
       - dpad_llc
 

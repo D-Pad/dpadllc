@@ -31,13 +31,24 @@ class UserManager:
         """ 
         Returns True if a new user was added
         """
-        conn = self.db.get_connection(db="dpad_llc")
+        conn = self.db.get_connection(db="dpad_llc_website")
         ph = PasswordHasher()
 
         if self.user_exists(username, conn):
-            return False, "Username already exists"
+            return False, "Username unavailable"
 
-        # Verify the invite code first
+        # Security checks
+        for key_word in ["select", "delete", "drop", "use"]:
+            if key_word in username.lower() or " " in username:
+                return False, "Invalid user name"
+
+        if len(password) < 8:
+            return False, "Password not long enough"
+
+        if " " in password:
+            return False, "Password must not contain spaces"
+
+        # Validate invite codes
         invite_codes = self.db.execute_query(conn, 
                                              "SELECT * FROM invite_codes;")
 
@@ -57,27 +68,16 @@ class UserManager:
         if not valid_invite_code:
             return False, "Invalid invite code"
 
-        # Security checks
-        for key_word in ["select", "delete", "drop", "use"]:
-            if key_word in username.lower() or " " in username:
-                return False, "Invalid user name"
-
-        if len(password) < 8:
-            return False, "Password not long enough"
-
-        if " " in password:
-            return False, "Password must not contain spaces"
-
         # Consume the invite
         query = """ 
-        DELETE FROM invite_codes WHERE id = ?;
+        DELETE FROM invite_codes WHERE id = %s;
         """
         self.db.execute_query(conn, query, False, params=(validated_id,))
       
         hashed_password = ph.hash(password) 
         query = """ 
         INSERT INTO user_login (username, password_hash)
-        VALUES (?, ?)
+        VALUES (%s, %s)
         """
         self.db.execute_query(conn, 
                               query, 
@@ -88,7 +88,7 @@ class UserManager:
 
     def generate_invite_codes(self, num_codes=10):
         
-        conn = self.db.get_connection("dpad_llc")
+        conn = self.db.get_connection("dpad_llc_website")
         invite_codes = []
 
         for _ in range(num_codes):
@@ -98,7 +98,7 @@ class UserManager:
                 conn,
                 """
                 INSERT INTO invite_codes (code_hash) 
-                VALUES (?);
+                VALUES (%s);
                 """,
                 False, 
                 params=(code_hash,)
@@ -124,7 +124,7 @@ class UserManager:
         conn = self.db.get_connection(db="dpad_llc")
         data = self.db.execute_query(
             conn, 
-            "SELECT password_hash FROM user_login WHERE username = ?",
+            "SELECT password_hash FROM user_login WHERE username = %s",
             params=(username,)
         )
 

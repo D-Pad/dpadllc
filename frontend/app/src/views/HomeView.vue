@@ -104,11 +104,9 @@ onUnmounted(() => {
         <p>Player Count: {{ visitorCount }}</p> 
       </div>
   
-      <!--
       <div id="btn-wrapper" @click="setMode('login')">
         <button class="btn">Login</button>
       </div>
-      -->
 
     </template>
 
