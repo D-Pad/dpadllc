@@ -170,7 +170,7 @@ nav {
 
 #social-media-wrapper {
   width: 100%;
-  margin: 30px auto 20px; 
+  margin: 20px auto 10px; 
   text-align: center;     
   z-index: 9999;
 }
@@ -180,11 +180,12 @@ nav {
 }
 
 .social-media-icon {
-  width: 40px;
+  width: 60px;
   height: auto;
-  margin: 0 20px;
+  margin: 0 30px;
   vertical-align: middle;
-  border-radius: 20px;
+  border-radius: 30px;
+  background-color: var(--pink);
 
   box-shadow: 0 0 0 0 var(--cyan);
   transition: 
@@ -193,7 +194,7 @@ nav {
 }
 
 .social-media-icon:hover {
-  box-shadow: 0 0 8px 4px var(--cyan);
+  box-shadow: 0 0 10px 6px var(--cyan);
   transform: scale(1.12);   
   cursor: pointer;
 }

@@ -258,7 +258,7 @@ onUnmounted(() => {
 }
 
 .form-label {
-  text-align: right;  
+  text-align: right; 
   font-weight: 500;
   width: 50%;
 }
@@ -292,18 +292,36 @@ onUnmounted(() => {
 }
 
 @media (max-width: 640px) {
+  .btn {
+    font-size: 10px;
+    margin: 20px;
+    padding: 5px;
+  } 
+
+  .login-form-wrapper {
+    margin-top: 40px; 
+    gap: 0.5rem;          
+  }
+
   #visitor-count-container {
-    font-size: 12px;
+    font-size: 10px;
   } 
 
   .form-row, .form-row input {
-    font-size: 12px;
+    font-size: 10px;
     flex-direction: column;
+    justify-content: left;
+    padding: 0.2rem;
   }
 
   .form-row {
-    height: 60vh;
-    overflow: hidden;
+    height: 40vh;
+    display: block;
+  }
+
+  .form-label {
+    width: 100%;
+    text-align: left;
   }
 
   .login-form-wrapper {
@@ -311,7 +329,8 @@ onUnmounted(() => {
   }
 
   #invite-code-wrapper {
-    font-size: 12px;
+    font-size: 10px;
+    justify-content: left;
   }
 }
 </style> 
