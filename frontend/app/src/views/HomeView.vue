@@ -249,28 +249,6 @@ onUnmounted(() => {
   height: 100%;
 }
 
-.form-row {
-  display: flex;
-  align-items: center;
-  font-size: 22px;
-  width: 100%;
-  gap: 1rem;          
-}
-
-.form-label {
-  text-align: right; 
-  font-weight: 500;
-  width: 50%;
-}
-
-.form-input input {
-  width: 100%;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  font-size: 18px;
-  font-family: 'Press Start 2P', monospace, system-ui, sans-serif;
-}
-
 #invite-code-wrapper {
   font-size: 20px;
   display: flex;
@@ -306,23 +284,6 @@ onUnmounted(() => {
   #visitor-count-container {
     font-size: 10px;
   } 
-
-  .form-row, .form-row input {
-    font-size: 10px;
-    flex-direction: column;
-    justify-content: left;
-    padding: 0.2rem;
-  }
-
-  .form-row {
-    height: 40vh;
-    display: block;
-  }
-
-  .form-label {
-    width: 100%;
-    text-align: left;
-  }
 
   .login-form-wrapper {
     margin: 0px auto;

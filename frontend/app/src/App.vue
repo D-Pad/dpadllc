@@ -17,10 +17,10 @@ onMounted(async () => {
       <nav>
         <div>
           <RouterLink class="nav-btn-main" to="/">Home</RouterLink>
-          <RouterLink class="nav-btn-main" to="/chat">Chat</RouterLink>
+          <RouterLink class="nav-btn-main" to="/about">About Us</RouterLink>
         </div>
         <div>
-          <RouterLink class="nav-btn-main" to="/about">About Us</RouterLink>
+          <RouterLink class="nav-btn-main" to="/chat">Chat</RouterLink>
           <a 
             class="nav-btn-main"
             href="/dpad_llc_resume.pdf"

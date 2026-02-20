@@ -126,6 +126,28 @@ main {
   cursor: pointer;
 }
 
+.form-row {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  width: 100%;
+  gap: 1rem;          
+}
+
+.form-label {
+  text-align: right; 
+  font-weight: 500;
+  width: 50%;
+}
+
+.form-input input {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  font-size: 18px;
+  font-family: 'Press Start 2P', monospace, system-ui, sans-serif;
+}
+
 @media (max-width: 640px) {
   #app {
     min-height: 70vh;
