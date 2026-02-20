@@ -2,6 +2,7 @@
 import { onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import AlienHunter from "@/components/art/AlienBounty.vue"
+import PalmTree from "@/components/art/PalmTree.vue"
 
 
 onMounted(async () => {
@@ -75,10 +76,22 @@ onMounted(async () => {
           alt="linkdin" 
         />
       </a>
+      <a 
+        href="https://www.facebook.com/profile.php?id=61587323279371"
+        target="_blank"
+        rel="noopener noreferrer"
+      > 
+        <img 
+          class="social-media-icon" 
+          src="@/assets/images/fbook.png" 
+          alt="facebook" 
+        />
+      </a>
     </div>
   </div>
 
   <AlienHunter />
+  <PalmTree />
 
   <div class="crt-overlay"></div>
 
