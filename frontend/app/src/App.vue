@@ -17,7 +17,7 @@ onMounted(async () => {
       <nav>
         <div>
           <RouterLink class="nav-btn-main" to="/">Home</RouterLink>
-          <RouterLink class="nav-btn-main" to="/about">About Us</RouterLink>
+          <RouterLink class="nav-btn-main" to="/about">Info</RouterLink>
         </div>
         <div>
           <RouterLink class="nav-btn-main" to="/chat">Chat</RouterLink>
@@ -129,6 +129,7 @@ nav {
   justify-content: space-around;
   align-items: center;
   gap: 16px;
+  z-index: 10;
 }
 
 .nav-bar-wrapper {
@@ -231,6 +232,14 @@ nav {
     text-align: center;
     font-size: 12px; 
   }
+  
+  .social-media-icon {
+    width: 40px;
+    height: auto;
+    margin: 0 20px;
+    vertical-align: middle;
+    border-radius: 20px;
+  } 
 
 }
 </style>

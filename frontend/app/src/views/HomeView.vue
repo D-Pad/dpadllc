@@ -256,10 +256,6 @@ onUnmounted(() => {
   margin: 30px auto 0px auto;
 }
 
-.invite-link {
-  color: var(--pink);
-}
-
 #status-message {
   margin-top: 50px;
   font-size: 20px; 

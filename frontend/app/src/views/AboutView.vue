@@ -39,14 +39,28 @@ const setSection = (newSection: string) => {
 
       <template v-if="section === 'services'">
         
-        <div id="header-wrapper">
-          <h1>Services</h1>
-        </div>
-
+        <h2>Software and Hardware</h2>
         <p>
-          We offer a variety of tech related services at D-Pad LLC, from 
-          computer repairs and custom PC builds, to software engineering 
-          services and website design.
+          We offer a wide range of technology services at D-Pad LLC, tailored 
+          for individuals, small businesses, and growing organizations. From 
+          computer repairs and custom PC builds to advanced software 
+          engineering and website development, we provide reliable solutions 
+          designed to keep your systems running smoothly. Whether you need 
+          virus removal, hardware upgrades, operating system installations, 
+          or soldering repairs on small electronics, we bring years of 
+          hands-on technical experience to every project. Software development 
+          is our specialty, and we take pride in building efficient, scalable 
+          solutions that solve real-world problems.
+        </p>
+
+        <h2>Graphic Design</h2>
+        <p>
+          In addition to technical services, we also offer professional 
+          graphic design. With an experienced designer on our team, we can 
+          help with branding, logos, marketing materials, and digital design 
+          needs. Ensuring your technology and visual identity work 
+          seamlessly together. At D-Pad LLC, our goal is simple: provide 
+          complete, dependable tech and design services all in one place.
         </p>
 
       </template>
@@ -58,11 +72,11 @@ const setSection = (newSection: string) => {
         </div>
 
         <p>
-          D-Pad LLC is a small, independent software development and graphic 
-          design studio based in Marion, Arkansas. We specialize in designing 
-          and delivering production-ready web applications with clean 
-          architecture, reliable infrastructure, and polished visual 
-          design.
+          D-Pad LLC is a small, independent software development, electronic 
+          harware repair, and graphic design studio based in Marion, Arkansas. 
+          We specialize in designing and delivering production-ready web 
+          applications with clean architecture, reliable infrastructure, and 
+          polished visual design.
         </p>
         
         <p>
@@ -91,25 +105,31 @@ const setSection = (newSection: string) => {
 
       <template v-else-if="section === 'contact'">
 
-        <div id="header-wrapper">
-          <h1>Contact Information</h1>
-        </div>
-
         <div id="contact-wrapper">
           <div class="contact-row">
             <div class="contact-left">Email:</div>
-            <div class="contact-right">dpadllc@proton.me</div>
+            <div class="contact-right">
+              <a href="mailto:dpadllc@proton.me" class="contact-link">
+                dpadllc@proton.me
+              </a>
+            </div>
           </div>
           
           <div class="contact-row">
             <div class="contact-left">Phone:</div>
-            <div class="contact-right">(901)-422-3400</div>
+            <div class="contact-right">
+              <a href="tel:+19014223400" class="contact-link">
+                (901)-422-3400
+              </a>
+            </div>
           </div>
         </div>
         
         <p>
-          Please message us on Facebook if possible. Otherwise, feel free to 
-          call us. We don't check emails as often as other sources.
+          Messaging us on  
+          <a href="https://www.facebook.com/profile.php?id=61587323279371">
+            Facebook</a> is more reliable than email. Phone calls or text 
+          messages are best. 
         </p>
 
       </template>
@@ -131,7 +151,7 @@ html, body {
 
 #inner-nav-wrapper {
   display: flex;
-  margin: 0px auto 30px auto;
+  margin: 0px auto 50px auto;
   justify-content: center;
 }
 
@@ -187,6 +207,12 @@ h1 {
   margin: 5px auto;
 }
 
+h2 {
+  color: var(--yellow);
+  font-size: 24px;
+  margin: 5px auto;
+}
+
 #header-wrapper {
   display: flex;
   justify-content: center;  
@@ -217,7 +243,16 @@ h1 {
   padding-left: 20px;
 }
 
+.contact-link {
+  color: var(--cyan);
+}
+
 @media (max-width: 640px) {
+ 
+  .contact-row {
+    font-size: 16px;
+  }
+  
   .page-content p {
     font-size: 16px;    
   }
@@ -226,8 +261,13 @@ h1 {
     font-size: 18px;    
   }
 
+  .page-content h2 {
+    font-size: 16px;
+  }
+
   .page-wrapper {
     max-height: 40vh;
+    padding: 0px; 
   }
 
   .form-row, .form-row input {
@@ -245,6 +285,40 @@ h1 {
   .form-label {
     width: 100%;
     text-align: left;
+  }
+
+  #inner-nav-wrapper {
+    display: flex;
+    margin: 0px auto 20px auto;
+    justify-content: center;
+  }
+
+  #inner-nav {
+    font-size: 12px;
+    gap: 0px;
+    padding: 0px; 
+  }
+
+  .inner-nav-btn {
+    padding: 5px;
+  }
+
+  #contact-wrapper {
+    margin: 20px 0px;
+  }
+  
+  .contact-row {
+    justify-content: none;
+    text-align: left;
+  }
+
+  .contact-left {
+    width: 10%;
+  }
+
+  .contact-right {
+    margin-left: 20px; 
+    width: 90%;
   }
 
 }

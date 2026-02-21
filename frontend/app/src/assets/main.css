@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+a {
+  color: var(--pink);
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -59,7 +63,7 @@ main {
   border-color: var(--cyan, #79F2F2);
 }
 
-.router-link-active {
+.router-link-active, nav-btn {
   background-color: var(--cyan, #79F2F2);
   color: var(--background, #251140);
 }
