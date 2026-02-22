@@ -67,9 +67,11 @@ const setSection = (newSection: string) => {
 
       <template v-else-if="section === 'about'">
 
+        <!--
         <div id="header-wrapper">
           <h1>About D-Pad LLC</h1>
         </div>
+        -->
 
         <p>
           D-Pad LLC is a small, independent software development, electronic 
