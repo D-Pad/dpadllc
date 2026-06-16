@@ -23,7 +23,7 @@ onMounted(async () => {
           <RouterLink class="nav-btn-main" to="/chat">Chat</RouterLink>
           <a 
             class="nav-btn-main"
-            href="/chase_fincher_resume_05232026.pdf"
+            href="/SWE_Resume.pdf"
             target="_blank"
             rel="noopener"
           >
