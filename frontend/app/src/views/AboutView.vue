@@ -204,17 +204,6 @@ p {
   line-height: 1.5;
 }
 
-h1 {
-  color: var(--cyan);
-  margin: 5px auto;
-}
-
-h2 {
-  color: var(--yellow);
-  font-size: 24px;
-  margin: 5px auto;
-}
-
 #header-wrapper {
   display: flex;
   justify-content: center;  

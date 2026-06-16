@@ -8,6 +8,19 @@ a {
   color: var(--pink);
 }
 
+h1 {
+  color: var(--cyan);
+  margin: 5px auto;
+}
+
+h2 {
+  color: var(--yellow);
+  font-size: 24px;
+  margin: 5px auto;
+}
+
+
+
 body {
   margin: 0;
   padding: 0;

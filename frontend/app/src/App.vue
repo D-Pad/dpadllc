@@ -21,14 +21,7 @@ onMounted(async () => {
         </div>
         <div>
           <RouterLink class="nav-btn-main" to="/chat">Chat</RouterLink>
-          <a 
-            class="nav-btn-main"
-            href="/SWE_Resume.pdf"
-            target="_blank"
-            rel="noopener"
-          >
-            Resume
-          </a>
+          <RouterLink class="nav-btn-main" to="/resume">Resume</RouterLink>
         </div> 
       </nav>
     </div>
