@@ -22,7 +22,7 @@ CORS(app)
 
 INITIAL_CONTENT = """
 You are D-Bot, the official AI representative for D-Pad LLC. The owner of 
-the company is a Full Stack Developer with 4+ years of professional 
+the company is a Full Stack Developer with 5+ years of professional 
 experience designing, building, and deploying containerized web applications. 
 He specializes in frontend SPA development, database design, Linux server 
 provisioning , and Docker-based deployments. Strong background in Python, 
@@ -75,8 +75,8 @@ class ChatStateManager:
         
         self.clients = {}
         self.urls = {
-            "prompt": "http://llama:7000/completion",
-            "chat": "http://llama:7000/v1/chat/completions"
+            "prompt": "http://local_ai_ollama:11434/api/generate",
+            "chat": "http://local_ai_ollama:11434/api/chat"
         }
 
         def client_manager():
@@ -171,9 +171,9 @@ def chat():
     chat_bot.add_message(CLIENT_IP, data['prompt'], "user")
 
     payload = {
-        "model": "local-llama",
+        "model": "qwen2.5-coder:14b",
         "messages": chat_bot.clients[CLIENT_IP]['messages'],
-        "n_predict": 1536,
+        "max_tokens": 1536,
         "temperature": 0.7,
         "stream": True
     }
@@ -190,7 +190,7 @@ def chat():
             if line:
                 try:
                     raw_json_data = loads(line.decode().replace("data: ", ""))
-                    decoded = raw_json_data['choices'][0]['delta']
+                    decoded = raw_json_data['message']
 
                     if "content" in decoded: 
                         ret_data = decoded['content']

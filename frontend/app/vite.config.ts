@@ -17,7 +17,7 @@ export default defineConfig({
   },
   server: {
     allowedHosts: [
-      "dpadllc"
+      "myserver"
     ], 
     proxy: {
       '/api': {

@@ -71,6 +71,8 @@ class DatabaseConnector:
 
         self.db_name = "dpad_llc_website"
         self.host = environ.get("DB_HOST_NAME") 
+        if self.host is None:
+            self.host = environ.get("DB_HOST_NAME_A") 
         self.user_name = environ.get("DB_USER_NAME") 
         self.password = environ.get("DB_PASSWORD") 
         self.port = int(environ.get("DB_PORT_NUM", 5432))
